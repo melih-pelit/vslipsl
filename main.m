@@ -74,7 +74,8 @@ dr_init = dc.simout_ss(1,8);
 % foot0 = 0; % it starts from VLO
 
 % flag = [f_ss; foot; foot_prev; x_M_LO]
-init_flag = [1; dc.col_param.foot; -dc.col_param.footPlus; x_M_init; x_CoM_ss_init]; % start with single stance phase (init_flag(1) == 1)
+flag_ref_ob = 0;
+init_flag = [1; dc.col_param.foot; -dc.col_param.footPlus; x_M_init; x_CoM_ss_init; flag_ref_ob]; % start with single stance phase (init_flag(1) == 1)
 init_f_record = 0;
 param = [L0_ss; k0_ss; m_M; m_swLeg; m_swFoot; I_swLeg; I_swFoot; L_thigh; k_swFoot; k_swLeg; theta_s0; r_s0; g; L0_ds; k0_ds];
 
@@ -117,15 +118,6 @@ ref_star_ds = [ref_star.ds.x_CoM_star, ...
 
 %% Controller gains
 % Controller Gains
-% gain.K_p = 450;
-% gain.K_d = 100;
-% 
-% gain.K_p_sw = 450;
-% gain.K_d_sw = 100;
-% 
-% gain.K_p_ds = 450;
-% gain.K_d_ds = 150;
-% gain.K_v_ds = 50; % 5 in visser 2012
 
 gain.K_p = 200;
 gain.K_d = 40;
@@ -137,19 +129,29 @@ gain.K_p_ds = 200;
 gain.K_d_ds = 40;
 gain.K_v_ds = 40; % 5 in visser 2012
 
+% gain.K_p = 40;
+% gain.K_d = 15;
+% 
+% gain.K_p_sw = 40;
+% gain.K_d_sw = 15;
+% 
+% gain.K_p_ds = 40;
+% gain.K_d_ds = 15;
+% gain.K_v_ds = 15; % 5 in visser 2012
+
 gains = [gain.K_p; gain.K_d; gain.K_p_sw; gain.K_d_sw; gain.K_p_ds; gain.K_d_ds; gain.K_v_ds];
 %%
 % Run Simulation
 flag_dist = 0; % disturbance flag
 
-Tf = 30; % final time
+Tf = 20; % final time
 sample_time = 0.001;
 
 % open_system('slip_w_sw_leg_DEtest')
 % sim('slip_w_sw_leg_DEtest')
 
-open_system('simulink_slipsl')
-sim('simulink_slipsl')
+open_system('vslipsl_sim')
+sim('vslipsl_sim')
 
 %%
 f_record = 0;
@@ -170,6 +172,9 @@ for i = 1:length(time)
     end
 end
 
+t_start = 0;
+t_end = 10;
+
 figure()
 nominal = [k0_ss; k_swLeg; k_swFoot; k0_ds; k0_ds];
 for i = 1:5
@@ -179,6 +184,11 @@ for i = 1:5
     plot(time, nominal(i)*ones(length(time),1))
     grid on
     vline(time(state_change_idx),'r')
+    xlim([t_start, t_end])
+
+    if i == 4
+        ylim([16000, 18500]);
+    end
 end
 %% Animation
 
