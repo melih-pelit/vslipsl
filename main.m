@@ -116,6 +116,7 @@ ref_star_ds = [ref_star.ds.x_CoM_star, ...
     ref_star.ds.del_y_CoM_star, ref_star.ds.del_dx_CoM_star, ...
     ref_star.ds.del2_y_CoM_star];
 
+
 %% Controller gains
 % Controller Gains
 
@@ -144,7 +145,7 @@ gains = [gain.K_p; gain.K_d; gain.K_p_sw; gain.K_d_sw; gain.K_p_ds; gain.K_d_ds;
 % Run Simulation
 flag_dist = 0; % disturbance flag
 
-Tf = 20; % final time
+Tf = 10; % final time
 sample_time = 0.001;
 
 % open_system('slip_w_sw_leg_DEtest')
@@ -173,7 +174,7 @@ for i = 1:length(time)
 end
 
 t_start = 0;
-t_end = 10;
+t_end = 20;
 
 figure()
 nominal = [k0_ss; k_swLeg; k_swFoot; k0_ds; k0_ds];
@@ -183,17 +184,35 @@ for i = 1:5
     hold on
     plot(time, nominal(i)*ones(length(time),1))
     grid on
-    vline(time(state_change_idx),'r')
+    % vline(time(state_change_idx),'r')
     xlim([t_start, t_end])
 
     if i == 4
         ylim([16000, 18500]);
     end
 end
+
+% debug
+figure()
+subplot(5,1,1)
+plot(time, ss_controller_info.det_A_ss.Data)
+ylabel('det(A_{ss})')
+subplot(5,1,2)
+plot(time, ss_controller_info.K_ss.Data)
+ylabel('K_{ss}')
+subplot(5,1,3)
+plot(time, ss_controller_info.error_ss.Data)
+ylabel('error_{ss}')
+subplot(5,1,4)
+plot(time, ss_controller_info.Lie_f_h.Data)
+ylabel('Lie_f_h')
+subplot(5,1,5)
+plot(time, ss_controller_info.Lie2_f_h.Data)
+ylabel('Lie2_f_h')
 %% Animation
 
 f_animation = 0; % animation flag
-f_video = 1; % to turn on video recording
+f_video = 0; % to turn on video recording
 frame_leap = 10;
 f_pause = 0;
 
