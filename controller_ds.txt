@@ -1,0 +1,12 @@
+Derived from derive_controller_DS.m 
+
+h4 = y_CoM - y_CoM_star;
+Lie_f_ds_h4 = dy_CoM - del_y_CoM_star*dx_CoM;
+Lie2_f_ds_h4 = (k0_ds*y_CoM*(L0_ds/(x_CoM^2 + y_CoM^2)^(1/2) - 1) - gravi*(m_M + m_swLeg + m_swFoot) + k0_ds*y_CoM*(L0_ds/(y_CoM^2 + (foot_prev - x_CoM)^2)^(1/2) - 1))/(m_M + m_swLeg + m_swFoot) - del2_y_CoM_star*dx_CoM^2 + (del_y_CoM_star*(k0_ds*(foot_prev - x_CoM)*(L0_ds/(y_CoM^2 + (foot_prev - x_CoM)^2)^(1/2) - 1) - k0_ds*x_CoM*(L0_ds/(x_CoM^2 + y_CoM^2)^(1/2) - 1)))/(m_M + m_swLeg + m_swFoot);
+Lie_g4_lie_f_ds_h4 = (y_CoM*(L0_ds/(x_CoM^2 + y_CoM^2)^(1/2) - 1))/(m_M + m_swLeg + m_swFoot) - (del_y_CoM_star*x_CoM*(L0_ds/(x_CoM^2 + y_CoM^2)^(1/2) - 1))/(m_M + m_swLeg + m_swFoot);
+Lie_g5_lie_f_ds_h4 = (y_CoM*(L0_ds/(y_CoM^2 + (foot_prev - x_CoM)^2)^(1/2) - 1))/(m_M + m_swLeg + m_swFoot) + (del_y_CoM_star*(foot_prev - x_CoM)*(L0_ds/(y_CoM^2 + (foot_prev - x_CoM)^2)^(1/2) - 1))/(m_M + m_swLeg + m_swFoot);
+
+h5 = dx_CoM - dx_CoM_star;
+Lie_f_ds_h5 = - del_dx_CoM_star*dx_CoM - (k0_ds*(foot_prev - x_CoM)*(L0_ds/(y_CoM^2 + (foot_prev - x_CoM)^2)^(1/2) - 1) - k0_ds*x_CoM*(L0_ds/(x_CoM^2 + y_CoM^2)^(1/2) - 1))/(m_M + m_swLeg + m_swFoot);
+Lie_g4_h5 = (x_CoM*(L0_ds/(x_CoM^2 + y_CoM^2)^(1/2) - 1))/(m_M + m_swLeg + m_swFoot);
+Lie_g5_h5 = -((foot_prev - x_CoM)*(L0_ds/(y_CoM^2 + (foot_prev - x_CoM)^2)^(1/2) - 1))/(m_M + m_swLeg + m_swFoot);

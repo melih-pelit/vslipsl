@@ -174,10 +174,11 @@ for i = 1:length(time)
 end
 
 t_start = 0;
-t_end = 20;
+t_end = time(end);
 
 figure()
 nominal = [k0_ss; k_swLeg; k_swFoot; k0_ds; k0_ds];
+y_labels = ["u_1"; "u_2"; "u_3"; "u_4"; "u_5"];
 for i = 1:5
     subplot(5,1,i)
     plot(time, nominal(i) + inputs(:,i))
@@ -186,6 +187,7 @@ for i = 1:5
     grid on
     % vline(time(state_change_idx),'r')
     xlim([t_start, t_end])
+    ylabel(y_labels(i,:))
 
     if i == 4
         ylim([16000, 18500]);

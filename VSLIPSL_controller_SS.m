@@ -1,4 +1,4 @@
-function [U_ss, det_A_ss, K_ss, error_ss, Lie_f_h, Lie2_f_h] = VSLIPSL_SS_controller( ...
+function [U_ss, det_A_ss, K_ss, error_ss, Lie_f_h, Lie2_f_h] = VSLIPSL_controller_SS( ...
     x_CoM, X_slipsl_ss, ref_star_ss, param, gains_VSLIPSL)
 
 % X_slipsl
@@ -59,7 +59,7 @@ ref_output_ss = [y_M_star; x_swFoot_star; y_swFoot_star];
 
 % controller
 
-% below are derived using derivation_of_DE_variableStiffness.mlx
+% below are derived using derive_controller_SS.m
 % which outputs to ss_controller.txt
 h1 = y_M - y_M_star;
 
