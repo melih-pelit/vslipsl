@@ -143,7 +143,7 @@ gain.K_v_ds = 40; % 5 in visser 2012
 gains = [gain.K_p; gain.K_d; gain.K_p_sw; gain.K_d_sw; gain.K_p_ds; gain.K_d_ds; gain.K_v_ds];
 %%
 % Run Simulation
-flag_dist = 0; % disturbance flag
+flag_dist = [1; 30; 30]; % disturbance flag = [on/off; F_x; F_y]
 
 Tf = 10; % final time
 sample_time = 0.001;
@@ -189,10 +189,8 @@ for i = 1:5
     xlim([t_start, t_end])
     ylabel(y_labels(i,:))
 
-    if i == 4
-        ylim([16000, 18500]);
-    end
 end
+hold off
 
 % debug
 figure()
