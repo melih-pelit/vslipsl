@@ -53,6 +53,8 @@ I_swLeg = dc.const_param.I_swLeg; %
 I_swFoot = dc.const_param.I_swFoot; %
 g = dc.const_param.gravi; % gravitational acc
 
+bound_cst = 0.5; % limit the stiffness range to +-bound_cst*nominal
+
 % initial condinition
 x_M_init = dc.simout_ss(1,1);
 y_M_init = dc.simout_ss(1,2);
@@ -77,7 +79,7 @@ dr_init = dc.simout_ss(1,8);
 flag_ref_ob = 0;
 init_flag = [1; dc.col_param.foot; -dc.col_param.footPlus; x_M_init; x_CoM_ss_init; flag_ref_ob]; % start with single stance phase (init_flag(1) == 1)
 init_f_record = 0;
-param = [L0_ss; k0_ss; m_M; m_swLeg; m_swFoot; I_swLeg; I_swFoot; L_thigh; k_swFoot; k_swLeg; theta_s0; r_s0; g; L0_ds; k0_ds];
+param = [L0_ss; k0_ss; m_M; m_swLeg; m_swFoot; I_swLeg; I_swFoot; L_thigh; k_swFoot; k_swLeg; theta_s0; r_s0; g; L0_ds; k0_ds; bound_cst];
 
 x_CoM_init = (x_M_init*m_M + (x_M_init + (L_thigh/2)*cos(theta_init))*m_swLeg + (x_M_init + (L_thigh + r_init)*cos(theta_init))*m_swFoot)/(m_M + m_swLeg + m_swFoot);
 y_CoM_init = (y_M_init*m_M + (y_M_init + (L_thigh/2)*sin(theta_init))*m_swLeg + (y_M_init + (L_thigh + r_init)*sin(theta_init))*m_swFoot)/(m_M + m_swLeg + m_swFoot);
