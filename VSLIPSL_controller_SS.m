@@ -1,4 +1,4 @@
-function [U_ss, det_A_ss, K_ss, error_ss, Lie_f_h, Lie2_f_h] = VSLIPSL_controller_SS( ...
+function [U_ss, det_A_ss, K_ss, error_ss, Lie_f_h, Lie2_f_h, reference_traj] = VSLIPSL_controller_SS( ...
     x_CoM, X_slipsl_ss, ref_star_ss, param, gains_VSLIPSL)
 
 % X_slipsl
@@ -55,7 +55,7 @@ del2_y_M_star = interp1(x_CoM_star_ss, ref_star_ss(:,8), x_CoM);
 del2_x_swFoot_star = interp1(x_CoM_star_ss, ref_star_ss(:,9), x_CoM);
 del2_y_swFoot_star = interp1(x_CoM_star_ss, ref_star_ss(:,10), x_CoM);
 
-ref_output_ss = [y_M_star; x_swFoot_star; y_swFoot_star];
+reference_traj = [y_M_star; x_swFoot_star; y_swFoot_star];
 
 % controller
 

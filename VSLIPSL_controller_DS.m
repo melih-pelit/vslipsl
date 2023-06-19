@@ -1,4 +1,4 @@
-function [U_ds, det_A_ds] = VSLIPSL_controller_DS(x_CoM, X_slipsl_ds, flag, ref_star_ds, param, gains_VSLIPSL)
+function [U_ds, error_ds, det_A_ds, reference_traj] = VSLIPSL_controller_DS(x_CoM, X_slipsl_ds, flag, ref_star_ds, param, gains_VSLIPSL)
 
 y_CoM = X_slipsl_ds(2);
 dx_CoM = X_slipsl_ds(3);
@@ -67,5 +67,8 @@ if abs(det_A_ds) >= 4e-9
 else
     U_ds = zeros(2,1);
 end
+
+reference_traj = [y_CoM_star; dx_CoM_star];
+error_ds = [h4; h5];
 
 end

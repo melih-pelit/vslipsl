@@ -6,6 +6,8 @@
 % clc
 clear
 
+addpath("Misc Resources\altmany-export_fig-d8b9f4a\")
+
 %% loading slipsl trajectory (openocl solution)
 % load('slipsl_traj\dc_comp2021-03-10-16-20.mat') % of SLIPSLOpenOCL2021-03-09-20-33
 % load('slipsl_traj\dc_comp2021-03-18-20-51.mat') % of SLIPSLOpenOCL2021-03-18-20-48
@@ -145,7 +147,7 @@ gain.K_v_ds = 40; % 5 in visser 2012
 gains = [gain.K_p; gain.K_d; gain.K_p_sw; gain.K_d_sw; gain.K_p_ds; gain.K_d_ds; gain.K_v_ds];
 %%
 % Run Simulation
-flag_dist = [1; 30; 30]; % disturbance flag = [on/off; F_x; F_y]
+flag_dist = [0; 30; 30]; % disturbance flag = [on/off; F_x; F_y]
 
 Tf = 10; % final time
 sample_time = 0.001;
@@ -164,53 +166,18 @@ if f_record == 1
     save(fullfile(subfolder,filename),'pBestMemo')
 end
 
-%% Plot
-% find the flag change indexes
-flag_prev = 1;
-state_change_idx = [];
-for i = 1:length(time)
-    if flag_prev ~= flag(i,1)
-        state_change_idx(end+1) = i;
-        flag_prev = flag(i,1);
-    end
-end
+%%
+flag_print = true;
+save_name = "_disturbance_off";
+%% Plot Variable Stiffness Inputs (U)
+plot_var_stiff_inputs(time, inputs, flag, param, flag_print, save_name)
 
-t_start = 0;
-t_end = time(end);
+%% Plot Trajectory Tracking Performance
+plot_trajectory_tracking(time, simout, flag, param, ss_controller_info, ds_controller_info, flag_print, save_name)
 
-figure()
-nominal = [k0_ss; k_swLeg; k_swFoot; k0_ds; k0_ds];
-y_labels = ["u_1"; "u_2"; "u_3"; "u_4"; "u_5"];
-for i = 1:5
-    subplot(5,1,i)
-    plot(time, nominal(i) + inputs(:,i))
-    hold on
-    plot(time, nominal(i)*ones(length(time),1))
-    grid on
-    % vline(time(state_change_idx),'r')
-    xlim([t_start, t_end])
-    ylabel(y_labels(i,:))
+%% Plot Controller Errors (h_i)
+plot_controller_errors(time, ss_controller_info, ds_controller_info, flag_print, save_name)
 
-end
-hold off
-
-% debug
-figure()
-subplot(5,1,1)
-plot(time, ss_controller_info.det_A_ss.Data)
-ylabel('det(A_{ss})')
-subplot(5,1,2)
-plot(time, ss_controller_info.K_ss.Data)
-ylabel('K_{ss}')
-subplot(5,1,3)
-plot(time, ss_controller_info.error_ss.Data)
-ylabel('error_{ss}')
-subplot(5,1,4)
-plot(time, ss_controller_info.Lie_f_h.Data)
-ylabel('Lie_f_h')
-subplot(5,1,5)
-plot(time, ss_controller_info.Lie2_f_h.Data)
-ylabel('Lie2_f_h')
 %% Animation
 
 f_animation = 0; % animation flag
