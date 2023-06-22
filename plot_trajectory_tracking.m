@@ -54,6 +54,12 @@ ref_traj(1,:) = NaN;
 size_ref_traj = size(ref_traj);
 num_of_plots = size_ref_traj(2);
 
+if nargin == 9
+    lgd_font_size = varargin{2};
+else
+    lgd_font_size = 14;
+end
+
 labels = [
     "$y_M$ [m]"; 
     "$x_{swFoot}$ [m]"; 
@@ -61,18 +67,26 @@ labels = [
     "$y_{CoM}$ [m]";
     "$\dot{x}_{CoM}$ [m/s]"];
 
-figure()
+fig = figure();
+fig.Position = [100 100 800 800]; % make the figure spawn larger
+line_width = 1.5;
+tcl = tiledlayout(5,1);
 for i = 1:num_of_plots
-    subplot(num_of_plots,1,i)
-    plot(time, simout_selected(:, i))
+%     subplot(num_of_plots,1,i)
+    nexttile(tcl)
+    plot(time, simout_selected(:, i), 'LineWidth', line_width, 'Color', [0.8500 0.3250 0.0980])
     hold on
-    plot(time, ref_traj(:, i), "--")
+    plot(time, ref_traj(:, i), "k--", 'LineWidth', 1.0)
     
 
-    ylabel(labels(i,:), Interpreter="latex")
+    ylabel(labels(i,:), Interpreter="latex", FontSize=lgd_font_size)
 
     if i == num_of_plots
-        xlabel('Time [sec]')
+        xlabel('Time [sec]', 'FontSize', lgd_font_size)
+    end
+
+    if i == 1
+        legend('refence', 'actual', 'FontSize', lgd_font_size)
     end
 
     if flag_print
@@ -82,7 +96,7 @@ for i = 1:num_of_plots
 end
 
 if flag_print
-    if nargin == 8
+    if nargin >= 8
         export_fig("figures\fig_trajectory_tracking" + varargin{1}, '-m3')
     else
         export_fig("figures\fig_trajectory_tracking", '-m3')

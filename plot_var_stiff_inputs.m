@@ -30,21 +30,35 @@ for i = 1:length(time)
     end
 end
 
+if nargin == 7
+    lgd_font_size = varargin{2};
+else
+    lgd_font_size = 14;
+end
+
 t_start = 0;
 t_end = time(end);
 
-figure()
+fig = figure();
+fig.Position = [100 100 800 800]; % make the figure spawn larger
 nominal = [k0_ss; k_swLeg; k_swFoot; k0_ds; k0_ds];
-y_labels = ["u_1"; "u_2"; "u_3"; "u_4"; "u_5"];
+titles = ["k_{stLeg} + u_1"; "k_{swLeg} + u_2"; "k_{swFoot} + u_3"; "k_{DS} + u_4"; "k_{DS} + u_5"];
+y_labels= ["[N/m]"; "[Nm/rad]"; "[N/m]"; "[N/m]"; "[N/m]"];
+line_width = 1.5;
 for i = 1:5
     subplot(5,1,i)
-    plot(time, nominal(i) + inputs(:,i))
+    plot(time, nominal(i) + inputs(:,i), 'LineWidth', line_width)
     hold on
-    plot(time, nominal(i)*ones(length(time),1))
+    plot(time, nominal(i)*ones(length(time),1), 'LineWidth', line_width)
     grid on
     % vline(time(state_change_idx),'r')
     xlim([t_start, t_end])
-    ylabel(y_labels(i,:))
+    title(titles(i,:), 'FontSize', lgd_font_size)
+    ylabel(y_labels(i,:), 'FontSize', lgd_font_size)
+
+    if i == 1
+        legend('nominal', 'var. stiffness', 'FontSize', lgd_font_size)
+    end
 
     if flag_print
         set(gcf, 'color', 'none');
@@ -54,7 +68,7 @@ for i = 1:5
 end
 
 if flag_print
-    if nargin == 6
+    if nargin >= 6
         export_fig("figures\fig_plot_var_stiff_inputs" + varargin{1}, '-m3')
     else
         export_fig("figures\fig_plot_var_stiff_inputs", '-m3')

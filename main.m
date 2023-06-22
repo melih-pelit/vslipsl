@@ -147,7 +147,7 @@ gain.K_v_ds = 40; % 5 in visser 2012
 gains = [gain.K_p; gain.K_d; gain.K_p_sw; gain.K_d_sw; gain.K_p_ds; gain.K_d_ds; gain.K_v_ds];
 %%
 % Run Simulation
-flag_dist = [0; 30; 30]; % disturbance flag = [on/off; F_x; F_y]
+flag_dist = [1; 30; 30]; % disturbance flag = [on/off; F_x; F_y]
 
 Tf = 10; % final time
 sample_time = 0.001;
@@ -167,16 +167,22 @@ if f_record == 1
 end
 
 %%
-flag_print = true;
-save_name = "_disturbance_off";
+flag_print = false;
+if flag_dist(1) == 0
+    save_name = "_disturbance_off";
+else
+    save_name = "_disturbance_on";
+end
+lgd_font_size = 13;
+
 %% Plot Variable Stiffness Inputs (U)
-plot_var_stiff_inputs(time, inputs, flag, param, flag_print, save_name)
+plot_var_stiff_inputs(time, inputs, flag, param, flag_print, save_name, lgd_font_size)
 
 %% Plot Trajectory Tracking Performance
-plot_trajectory_tracking(time, simout, flag, param, ss_controller_info, ds_controller_info, flag_print, save_name)
+plot_trajectory_tracking(time, simout, flag, param, ss_controller_info, ds_controller_info, flag_print, save_name, lgd_font_size)
 
 %% Plot Controller Errors (h_i)
-plot_controller_errors(time, ss_controller_info, ds_controller_info, flag_print, save_name)
+plot_controller_errors(time, ss_controller_info, ds_controller_info, flag_print, save_name, lgd_font_size)
 
 %% Animation
 
