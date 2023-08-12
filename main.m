@@ -148,8 +148,9 @@ gains = [gain.K_p; gain.K_d; gain.K_p_sw; gain.K_d_sw; gain.K_p_ds; gain.K_d_ds;
 %%
 % Run Simulation
 flag_dist = [1; 30; 30]; % disturbance flag = [on/off; F_x; F_y]
+use_variable_stiffness = true;
 
-Tf = 10; % final time
+Tf = 20; % final time
 sample_time = 0.001;
 
 % open_system('slip_w_sw_leg_DEtest')
@@ -184,19 +185,35 @@ plot_trajectory_tracking(time, simout, flag, param, ss_controller_info, ds_contr
 %% Plot Controller Errors (h_i)
 plot_controller_errors(time, ss_controller_info, ds_controller_info, flag_print, save_name, lgd_font_size)
 
+%%
+figure()
+title("Poincare Map")
+hold on
+plot(qVLO(:,6), atan2(qVLO(:,12), qVLO(:,11)), '.-')
+xlabel("$y_M$ [m]", Interpreter="latex")
+ylabel("$\dot{x}_M / \dot{y}_M$", Interpreter="latex")
+
+if flag_print
+    set(gcf, 'color', 'none');
+    set(gca, 'color', 'none');
+    export_fig("figures\poincare_map", '-m3')
+end
+
 %% Animation
 
-f_animation = 0; % animation flag
-f_video = 0; % to turn on video recording
-frame_leap = 10;
+f_animation = 1; % animation flag
+f_video = 1; % to turn on video recording
+frame_leap = 20;
 f_pause = 0;
 
+%%
 if f_animation == 1
-    animation(simout, flag, param, time, frame_leap, f_video, f_pause, sample_time)
+    start_end_time = [15,20];
+    animation(simout, flag, param, time, frame_leap, f_video, f_pause, sample_time, start_end_time)
 end
 
 %% Analysis
-f_analysis = 0; % flag for turning on and of the analysis
+f_analysis = 1; % flag for turning on and of the analysis
 if f_analysis == 1
     
     x_CoM = simout(:, 1);

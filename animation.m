@@ -1,5 +1,5 @@
-function animation(simout, flag, param, time, frame_leap, f_video, f_pause, sample_time)
-figure(1)
+function animation(simout, flag, param, time, frame_leap, f_video, f_pause, sample_time, start_end_time)
+figure()
 simout_size = size(simout);
 nt = simout_size(1);
 
@@ -26,8 +26,7 @@ if f_video == 1
     open(video_v);
 end
 
-end_sec = 10;
-for i = 1:frame_leap:(10*end_sec/(sample_time*frame_leap))
+for i = (start_end_time(1)/sample_time):frame_leap:(start_end_time(2)/sample_time)
     
     X = simout(i,:);
     
@@ -78,7 +77,7 @@ for i = 1:frame_leap:(10*end_sec/(sample_time*frame_leap))
         
     end
     
-    plot([-2.5 + x_M, 2.5 + x_M], [0, 0], 'k') % plotting the ground
+    plot([-1000, 1000], [0, 0], 'k') % plotting the ground
     txt1 = ['f_{SS}: ' num2str(f_SS)];
     text(-1, 2.5, txt1)
     
