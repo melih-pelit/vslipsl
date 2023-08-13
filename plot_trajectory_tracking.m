@@ -68,7 +68,7 @@ labels = [
     "$\dot{x}_{CoM}$ [m/s]"];
 
 fig = figure();
-fig.Position = [100 100 800 800]; % make the figure spawn larger
+fig.Position = [100 100 1280 720]; % make the figure spawn larger
 line_width = 1.5;
 tcl = tiledlayout(5,1);
 for i = 1:num_of_plots
@@ -86,7 +86,7 @@ for i = 1:num_of_plots
     end
 
     if i == 1
-        legend('refence', 'actual', 'FontSize', lgd_font_size)
+        legend('actual', 'reference', 'FontSize', lgd_font_size)
     end
 
     if flag_print

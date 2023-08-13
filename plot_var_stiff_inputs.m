@@ -40,7 +40,7 @@ t_start = 0;
 t_end = time(end);
 
 fig = figure();
-fig.Position = [100 100 800 800]; % make the figure spawn larger
+fig.Position = [100 100 1280 720]; % make the figure spawn larger
 nominal = [k0_ss; k_swLeg; k_swFoot; k0_ds; k0_ds];
 titles = ["k_{stLeg} + u_1"; "k_{swLeg} + u_2"; "k_{swFoot} + u_3"; "k_{DS} + u_4"; "k_{DS} + u_5"];
 y_labels= ["[N/m]"; "[Nm/rad]"; "[N/m]"; "[N/m]"; "[N/m]"];

@@ -147,10 +147,10 @@ gain.K_v_ds = 40; % 5 in visser 2012
 gains = [gain.K_p; gain.K_d; gain.K_p_sw; gain.K_d_sw; gain.K_p_ds; gain.K_d_ds; gain.K_v_ds];
 %%
 % Run Simulation
-flag_dist = [1; 30; 30]; % disturbance flag = [on/off; F_x; F_y]
+flag_dist = [1; 50; 50]; % disturbance flag = [on/off; F_x; F_y]
 use_variable_stiffness = true;
 
-Tf = 20; % final time
+Tf = 10; % final time
 sample_time = 0.001;
 
 % open_system('slip_w_sw_leg_DEtest')
@@ -168,7 +168,7 @@ if f_record == 1
 end
 
 %%
-flag_print = false;
+flag_print = true;
 if flag_dist(1) == 0
     save_name = "_disturbance_off";
 else
@@ -201,8 +201,8 @@ end
 
 %% Animation
 
-f_animation = 1; % animation flag
-f_video = 1; % to turn on video recording
+f_animation = 0; % animation flag
+f_video = 0; % to turn on video recording
 frame_leap = 20;
 f_pause = 0;
 
